@@ -56,6 +56,58 @@ X = sm.add_constant(demo_sub[['age', 'male', 'income', 'Bachelors degree',
 print(sm.OLS(y, X).fit().summary())
 
 
+#health, income, age
+
+rt_health = ratings[ratings['aspect'] == 'your health'].drop('aspect', axis = 1)
+
+rt_health = rt_health.merge(demo, on = 'worker')
+
+labels = ['Extremely low', 'Low', 'High', 'Extremely high']
+
+rt_health['class'] = pd.cut(rt_health.rating, range(0, 101, 25), right=False, labels=labels)
+
+
+colors = dict(zip(labels, ['red', 'orange', 'yellow', 'green']))
+sizes = dict(zip(labels, [2, 7, 12, 17]))
+
+
+fig, ax = plt.subplots(figsize = (15,7))
+
+for key, group in rt_health.groupby('class'):
+    plt.plot(group.age, group.income/1000, 'o', label = key, mfc = 'none', 
+             mec = colors[key], ms = sizes[key], mew = 1.5)
+
+plt.title('Relationship between subjective health, agen and income')
+plt.xlabel('Age')
+plt.ylabel('Income (Thousands)')
+plt.legend()
+plt.show()
+plt.savefig('alt1.png')
+
+health_rates = ratings[ratings['aspect'].isin(['your health', 'your mental health', 'your physical fitness'])]
+
+health_rates = health_rates.groupby('worker', as_index = False)['rating'].mean()
+
+health_rates = health_rates.merge(demo, on = 'worker')
+
+health_rates['class'] = pd.cut(health_rates.rating, range(0, 101, 25), right=False, labels=labels)
+
+fig, ax = plt.subplots(figsize = (15,7))
+
+for key, group in health_rates.groupby('class'):
+    plt.plot(group.age, group.income/1000, 'o', label = key, mfc = 'none', 
+             mec = colors[key], ms = sizes[key])
+
+plt.title('Relationship between subjective health index, agen and income')
+plt.xlabel('Age')
+plt.ylabel('Income (Thousands)')
+plt.legend()
+plt.show()
+plt.savefig('alt2.png')
+
+
+
+
 
 
 
