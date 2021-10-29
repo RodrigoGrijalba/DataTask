@@ -123,17 +123,16 @@ rt_health['class'] = pd.cut(rt_health.rating, range(0, 101, 25), right=False, la
 colors = dict(zip(labels, ['red', 'orange', 'yellow', 'green'])) # Picking the colors for each category
 sizes = dict(zip(labels, [2, 7, 12, 17])) # And the sizes
 
-fig, ax = plt.subplots(figsize = (15,7)) #This plot size works well with the other values and has decent resolution
+fig, ax = plt.subplots(figsize = (15,7))
 
 for key, group in rt_health.groupby('class'):
     plt.plot(group.age, group.income/1000, 'o', label = key, mfc = 'none', 
              mec = colors[key], ms = sizes[key], mew = 1.5)
 
-plt.title('Relationship between subjective health, agen and income')
+plt.title('Relationship between subjective health, age and income')
 plt.xlabel('Age')
 plt.ylabel('Income (Thousands)')
 plt.legend()
-plt.show()
 plt.savefig('alt1.png')
 
 health_rates = ratings[ratings['aspect'].isin(['your health', 'your mental health', 'your physical fitness'])] # The other alternative will have an index, which is the average of subjective health, mental health, and fitness
@@ -150,11 +149,10 @@ for key, group in health_rates.groupby('class'):
     plt.plot(group.age, group.income/1000, 'o', label = key, mfc = 'none', 
              mec = colors[key], ms = sizes[key])
 
-plt.title('Relationship between subjective health index, agen and income')
+plt.title('Relationship between subjective health index, age and income')
 plt.xlabel('Age')
 plt.ylabel('Income (Thousands)')
 plt.legend()
-plt.show()
 plt.savefig('alt2.png')
 
 
