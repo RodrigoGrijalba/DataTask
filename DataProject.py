@@ -58,9 +58,21 @@ demo_sub = demo.merge(subjective_riches, on = 'worker')
 
 # (d) "Regress  (with  OLS)  subjective  riches  on income  and  report  the  results."
 
-print(sm.OLS(demo_sub.rating, sm.add_constant(demo_sub.income)).fit().summary()) # OLS with raw data
+model = sm.OLS(demo_sub.rating, sm.add_constant(demo_sub.income)).fit() # OLS with raw data
 
-print(sm.OLS(demo_sub.rating, sm.add_constant(demo_sub.income/1000)).fit().summary()) # OLS with income in thousands of units (basically the same result but more interpretable)
+plt.rc('figure', figsize=(12, 7))
+plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 10}, fontproperties = 'monospace')
+plt.axis('off')
+plt.tight_layout()
+
+model = sm.OLS(demo_sub.rating, sm.add_constant(demo_sub.income/1000)).fit() # OLS with income in thousands of units (basically the same result but more easily interpretable)
+
+plt.rc('figure', figsize=(12, 7))
+plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 10}, fontproperties = 'monospace')
+plt.axis('off')
+plt.tight_layout()
+plt.savefig('model1.png')
+
 
 # (e) "Regress (with  OLS) subjective  riches on income with controls  for age, age 2   (age squared),  gender,
 # level of education, and  race."
@@ -81,7 +93,13 @@ X = sm.add_constant(demo_sub[['age', 'male', 'income', 'Bachelors degree',
        'Some college', 'Asian (non-Hispanic)', 'Black (non-Hispanic)',
        'Hispanic (any race)', 'Multiracial', 'Other', 'age2']])
 
-print(sm.OLS(y, X).fit().summary())
+model = sm.OLS(y, X).fit()
+
+plt.rc('figure', figsize=(12, 7))
+plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 10}, fontproperties = 'monospace')
+plt.axis('off')
+plt.tight_layout()
+plt.savefig('model2.png')
 
 # Question 3
 
